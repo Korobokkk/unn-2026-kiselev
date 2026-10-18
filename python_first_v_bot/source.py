@@ -1,21 +1,26 @@
+"""Main module for telegram bot."""
+
 import json
-import os
-from urllib import parse, request, error
 import logging
+import os
+from typing import Any
+from urllib import error, parse, request
 
 logging.basicConfig(level=logging.INFO)
 
+logger = logging.getLogger(__name__)
+
 BASE_URL = os.environ["BASE_URL"]
-TOKEN_TG_BOT=os.environ["TOKEN_TG_BOT"]
+TOKEN_TG_BOT = os.environ["TOKEN_TG_BOT"]
 
 
-def request_telegram_bot_api(method, **params):
-    """реквестаем по апи"""
+def request_telegram_bot_api(method: str, **params: Any) -> Any:
+    """реквестаем по апи."""
     url = f"{BASE_URL}/bot{TOKEN_TG_BOT}/{method}"
 
     curr_request = request.Request(
         url,
-        data= parse.urlencode(params).encode(),
+        data=parse.urlencode(params).encode(),
         method="POST",
     )
 
@@ -23,22 +28,25 @@ def request_telegram_bot_api(method, **params):
         with request.urlopen(curr_request, timeout=40) as response:
             payload = json.loads(response.read())
     except error.HTTPError as error_message:
-        logging.error(f"HTTP error: {error_message.code} {error_message.reason}")
+        logger.error("HTTP error: %s %s", error_message.code, error_message.reason)
         raise
     except error.URLError as error_message:
-        logging.error(f"Network error: {error_message.reason}")
+        logger.error("Network error: %s", error_message.reason)
         raise
 
     if not payload["ok"]:
-        raise RuntimeError(f"Telegram API error: {payload['description']}")
-    
+        description = payload["description"]
+        logger.error("Telegram API error: %s", description)
+        raise RuntimeError(f"Telegram API error: {description}")
+
     return payload["result"]
 
 
-def main():
-    logging.info("WORK WORK WORK\nJOB JOB JOB")
+def main() -> None:
+    """Bot main loop."""
+    logger.info("WORK WORK WORK\nJOB JOB JOB")
 
-    offset=0
+    offset = 0
 
     while True:
         updates = request_telegram_bot_api(
@@ -59,17 +67,18 @@ def main():
                     chat_id=message["chat"]["id"],
                     text=message["text"],
                 )
-                logging.info(f"Received text message: {message['text']}")
+                logger.info("Received text message: %s", message["text"])
             elif "sticker" in message:
-                logging.info(f"Received sticker message: {message}")
+                logger.info("Received sticker message: %s", message)
                 request_telegram_bot_api(
                     "sendSticker",
                     chat_id=message["chat"]["id"],
-                    sticker="CAACAgIAAxkBAAM8atTFFVQZkbjLS_m62zr9rHTZxo8AAiJ1AALfQMBL0QZ6oNQWpUc9BA"
+                    sticker="CAACAgIAAxkBAAM8atTFFVQZkbjLS_m62zr9rHTZxo8AAiJ1AALfQMBL0QZ6oNQWpUc9BA",
                 )
             else:
-                logging.info(f"Received unsupported message type: {message}")
+                logger.info("Received unsupported message type: %s", message)
                 continue
 
-if __name__== "__main__":
+
+if __name__ == "__main__":
     main()

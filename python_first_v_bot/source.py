@@ -25,7 +25,7 @@ def request_telegram_bot_api(method: str, **params: Any) -> Any:
     )
 
     try:
-        with request.urlopen(curr_request, timeout=40) as response:
+        with request.urlopen(curr_request, timeout=15) as response:
             payload = json.loads(response.read())
     except error.HTTPError as error_message:
         logger.error("HTTP error: %s %s", error_message.code, error_message.reason)
@@ -78,7 +78,3 @@ def main() -> None:
             else:
                 logger.info("Received unsupported message type: %s", message)
                 continue
-
-
-if __name__ == "__main__":
-    main()

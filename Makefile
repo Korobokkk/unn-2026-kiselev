@@ -30,6 +30,6 @@ lint:
 	mypy new_bot tests
 
 run-tests:
-	pytest 
+	PYTHONDONTWRITEBYTECODE=1 pytest tests/
 
 pre-commit: lint run-tests

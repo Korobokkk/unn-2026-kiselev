@@ -10,13 +10,13 @@ logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger(__name__)
 
-BASE_URL = os.environ["BASE_URL"]
-TOKEN_TG_BOT = os.environ["TOKEN_TG_BOT"]
+TELEGRAM_BASE_URL = os.environ["TELEGRAM_BASE_URL"]
+TELEGRAM_TOKEN = os.environ["TELEGRAM_TOKEN"]
 
 
 def request_telegram_bot_api(method: str, **params: Any) -> Any:
     """реквестаем по апи."""
-    url = f"{BASE_URL}/bot{TOKEN_TG_BOT}/{method}"
+    url = f"{TELEGRAM_BASE_URL}/bot{TELEGRAM_TOKEN}/{method}"
 
     curr_request = request.Request(
         url,
@@ -52,6 +52,7 @@ def main() -> None:
         updates = request_telegram_bot_api(
             "getUpdates",
             offset=offset,
+            limit=67,
             timeout=30,
             allowed_updates=json.dumps(["message"]),
         )

@@ -2,7 +2,7 @@ IMAGE=echo_tg_bot
 CONTAINER=curr_echo_tg_bot
 ENV=new_bot/.env
 
-.PHONY: install build run stop logs ruff-cs-check ruff-linter-check mypy-check run-tests pre-commit
+.PHONY: install build run stop logs ruff-cs-check ruff-linter-check mypy-check test pre-commit
 
 install:
 	uv sync --dev
@@ -34,7 +34,7 @@ ruff-linter-check:
 mypy-check:
 	uv run mypy
 
-run-tests:
+test:
 	PYTHONDONTWRITEBYTECODE=1 uv run pytest tests/
 
-pre-commit: ruff-cs-check ruff-linter-check mypy-check run-tests
+pre-commit: ruff-cs-check ruff-linter-check mypy-check test

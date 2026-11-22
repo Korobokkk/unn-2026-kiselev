@@ -2,7 +2,7 @@ IMAGE=echo_tg_bot
 CONTAINER=curr_echo_tg_bot
 ENV=new_bot/.env
 
-.PHONY: install build run stop logs format lint run-tests pre-commit
+.PHONY: install build run stop logs ruff-cs-check ruff-linter-check mypy-check run-tests pre-commit
 
 install:
 	uv sync --dev
@@ -24,15 +24,17 @@ stop:
 logs:
 	docker logs -f $(CONTAINER)
 
-format:
-	black new_bot tests
-	ruff format new_bot tests
 
-lint:
-	ruff check new_bot tests
-	mypy new_bot tests
+ruff-cs-check:
+	ruff format --check new_bot tests/
+
+ruff-linter-check:
+	ruff check new_bot tests/
+
+mypy-check:
+	mypy
 
 run-tests:
 	PYTHONDONTWRITEBYTECODE=1 pytest tests/
 
-pre-commit: lint run-tests
+pre-commit: ruff-cs-check ruff-linter-check mypy-check run-tests

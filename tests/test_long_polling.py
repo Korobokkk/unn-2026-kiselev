@@ -55,7 +55,7 @@ class PollOnceTest(unittest.TestCase):
         self.assertEqual(next_offset, 0)
 
     def test_unordered_update_ids_uses_max_offset(self) -> None:
-        """Test that when updates are returned with unordered update_ids, the offset is set to the maximum update_id + 1."""  #noqa: E501
+        """Test that when updates are returned with unordered update_ids, the offset is set to the maximum update_id + 1."""  # noqa: E501
         update_high = {"update_id": 100, "message": {"text": "first"}}
         update_low = {"update_id": 50, "message": {"text": "second"}}
         dispatched = []

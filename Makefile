@@ -26,15 +26,15 @@ logs:
 
 
 ruff-cs-check:
-	ruff format --check new_bot tests/
+	uv run ruff format --check new_bot tests/
 
 ruff-linter-check:
-	ruff check new_bot tests/
+	uv run ruff check new_bot tests/
 
 mypy-check:
-	mypy
+	uv run mypy
 
 run-tests:
-	PYTHONDONTWRITEBYTECODE=1 pytest tests/
+	PYTHONDONTWRITEBYTECODE=1 uv run pytest tests/
 
 pre-commit: ruff-cs-check ruff-linter-check mypy-check run-tests

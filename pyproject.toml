@@ -22,6 +22,11 @@ ignore =[
     "I001",
 ]
 
+[dependency-groups]
+dev = [
+    "pre-commit>=4.7.0",
+]
+
 [tool.mypy]
 files = ["new_bot"]
 

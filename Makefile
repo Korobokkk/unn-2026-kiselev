@@ -2,7 +2,10 @@ IMAGE=echo_tg_bot
 CONTAINER=curr_echo_tg_bot
 ENV=new_bot/.env
 
-.PHONY: build run stop logs format lint run-tests pre-commit
+.PHONY: install build run stop logs format lint run-tests pre-commit
+
+install:
+	uv sync --dev
 
 build:
 	docker build -t $(IMAGE) .

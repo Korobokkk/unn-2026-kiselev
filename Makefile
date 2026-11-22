@@ -1,6 +1,6 @@
 IMAGE=echo_tg_bot
 CONTAINER=curr_echo_tg_bot
-ENV=python_first_v_bot/.env
+ENV=new_bot/.env
 
 .PHONY: build run stop logs
 

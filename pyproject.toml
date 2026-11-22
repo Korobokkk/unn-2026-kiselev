@@ -13,9 +13,12 @@ ignore =[
     "EXE002",
     "TRY003",
     "TRY400",
+    "E402",
+    "PIE790", 
 ]
 
 [tool.mypy]
+
 files = ["."]
 exclude = ["\\.venv/"]
 check_untyped_defs = true
